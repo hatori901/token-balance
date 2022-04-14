@@ -1,5 +1,6 @@
 import { ColorModeScript } from '@chakra-ui/react';
 import React, { StrictMode } from 'react';
+import { MoralisProvider } from "react-moralis";
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -7,8 +8,10 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <StrictMode>
-    <ColorModeScript />
-    <App />
+    <MoralisProvider appId="tdwWkuiiWSeYIYznpPft9Qi8DJ8968S1qCFo436h" serverUrl="https://wjqhhlvdgol0.usemoralis.com:2053/server">
+      <ColorModeScript />
+      <App />
+    </MoralisProvider>
   </StrictMode>,
   document.getElementById('root')
 );
