@@ -7,14 +7,16 @@ import {
   Container,
   Button,
   Flex,
-  Tabs, TabList, TabPanels, Tab, TabPanel
+  Image,
+  Tabs, TabList, TabPanels, Tab, TabPanel,
+  Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, Text
 } from '@chakra-ui/react';
 import Balance from './components/Balance';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 
 function App() {
   const {authenticate, isAuthenticated, isAuthenticating, logout } = useMoralis();
-
+  const {isOpen,onOpen,onClose} = useDisclosure();
 
   const login = async (wallet) => {
       
@@ -44,7 +46,36 @@ function App() {
           <ColorModeSwitcher justifySelf="flex-start" />
           {!isAuthenticated
           ? (
-            <Button colorScheme="blue" onClick={() => login("metamask")}>{isAuthenticating ? "Loading..." : "Connect Wallet"}</Button>
+            <>
+              <Button colorScheme="blue" onClick={onOpen}>{isAuthenticating ? "Loading..." : "Connect Wallet"}</Button>
+              <Modal isOpen={isOpen} onClose={onClose}>
+                  <ModalOverlay/>
+                  <ModalContent>
+                    <ModalHeader>
+                      Connect Wallet
+                    </ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody>
+                      <Button m="5px" size='lg' onClick={() => login("metamask")}>
+                        <Flex alignItems="center">
+                          <Image w="30px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1200px-MetaMask_Fox.svg.png"></Image>
+                          <Text>Metamask</Text>
+                        </Flex>
+                      </Button>
+                      <Button m="5px" size='lg' onClick={() => login("walletconnect")}>
+                        <Flex alignItems="center">
+                          <Image w="30px" src="https://repository-images.githubusercontent.com/204001588/a5169900-c66c-11e9-8592-33c7334dfd6d"></Image>
+                          <Text>Wallet Connect</Text>
+                        </Flex>
+                      </Button>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button colorScheme="blue" mr={3} onClick={onClose}>Close</Button>
+                    </ModalFooter>
+                  </ModalContent>
+              </Modal>
+              </>
+            
           ): (
             <Button colorScheme="red" onClick={logOut}>Disconnect</Button>
           )}
